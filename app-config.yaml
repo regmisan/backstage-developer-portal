@@ -1,5 +1,5 @@
 app:
-  title: Backstage Developer Portal
+  title: Scaffolded Backstage App
   baseUrl: http://localhost:3000
 
 organization:
@@ -21,11 +21,11 @@ backend:
   reading:
     allow:
       - host: github.com
-      - host: raw.githubusercontent.com
+      - host: raw.githubusercontent.com  # ✅ Allows reading public files
 
 integrations:
   github:
-    - host: github.com  # 🔹 No token required for public repos
+    - host: github.com  # ✅ No token needed for public repositories
 
 auth:
   environment: development
@@ -51,13 +51,15 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location, Template]
+    - allow: [Component, System, API, Resource, Location, Template]  # ✅ Ensures Backstage allows Templates
 
   locations:
     - type: url
       target: https://raw.githubusercontent.com/regmisan/backstage-developer-portal/develop/catalog-info.yaml
       rules:
         - allow: [Component, System, API, Resource, Location, Template]
+
+  useUrlReadersSearch: true
 
 permission:
   enabled: true
