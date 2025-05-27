@@ -1,0 +1,61 @@
+app:
+  title: Scaffolded Backstage App
+  baseUrl: http://localhost:3000
+
+organization:
+  name: My Company
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+  csp:
+    connect-src: ["'self'", "http:", "https:"]
+  cors:
+    origin: http://localhost:3000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: better-sqlite3
+    connection: ':memory:'
+  reading:
+    allow:
+      - host: raw.githubusercontent.com
+      - host: github.com
+      - host: codeload.github.com            
+
+integrations:
+
+  github:
+    - host: github.com
+      apiBaseUrl: https://api.github.com
+      rawBaseUrl: https://raw.githubusercontent.com
+      token: ${GITHUB_TOKEN}
+    
+auth:
+  providers:
+    guest: {}
+
+catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, Template]
+  locations:
+    - type: url
+      target: https://raw.githubusercontent.com/regmisan/dev-portal-gcp/main/templates/gcp-vm/template.yaml
+      rules:
+        - allow: [Template]
+  useUrlReadersSearch: true
+
+scaffolder:
+  templates:
+    - https://raw.githubusercontent.com/regmisan/dev-portal-gcp/main/templates/gcp-vm/template.yaml
+
+techdocs:
+  builder: local
+  generator:
+    runIn: docker
+  publisher:
+    type: local
+
+permission:
+  enabled: true

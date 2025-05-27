@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: gcp-vm-template-location
+  description: GCP VM template registration
+spec:
+  targets:
+    - ./template.yaml

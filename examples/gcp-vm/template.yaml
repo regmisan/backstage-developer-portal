@@ -1,0 +1,68 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gcp-vm
+  title: Provision GCP VM
+  description: Provisions a GCP VM using Terraform
+spec:
+  owner: user:guest
+  type: service
+
+  parameters:
+    - title: GCP VM Configuration
+      required:
+        - projectId
+        - region
+        - zone
+        - instanceName
+      properties:
+        projectId:
+          type: string
+          title: GCP Project ID
+        region:
+          type: string
+          title: Region
+          default: us-central1
+        zone:
+          type: string
+          title: Zone
+          default: us-central1-a
+        instanceName:
+          type: string
+          title: VM Instance Name
+
+  steps:
+    - id: fetch
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          projectId: ${{ parameters.projectId }}
+          region: ${{ parameters.region }}
+          zone: ${{ parameters.zone }}
+          instanceName: ${{ parameters.instanceName }}
+
+    - id: terraformApply
+      name: Terraform Apply
+      action: shell:execute
+      input:
+        workingDirectory: ${{ steps.fetch.output.target }}
+        command: |
+          terraform init
+          terraform apply -auto-approve
+
+  output:
+    text:
+      - "GCP VM ${{ parameters.instanceName }} has been provisioned in project ${{ parameters.projectId }}."
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Template
+metadata:
+  name: gcp-vm
+  title: Provision GCP VM
+  description: Provisions a GCP VM using Terraform
+spec:
+  type: service
+  owner: user:guest
